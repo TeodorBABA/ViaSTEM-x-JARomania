@@ -1,0 +1,210 @@
+import React, { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  ShieldCheck,
+  AlertTriangle,
+  Search,
+  FileText,
+  Sparkles,
+  SlidersHorizontal,
+  CheckCircle2,
+  XCircle,
+  ChevronRight,
+  Upload,
+  Info,
+  Building2,
+  Wallet,
+  Scale,
+  LockKeyhole,
+} from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
+const offers = [
+  {
+    id: 1,
+    company: "Aegis Protect",
+    type: "Locuință",
+    price: 38,
+    match: 94,
+    coverage: "Foarte bună",
+    hiddenRisk: "Mediu",
+    color: "from-emerald-500 to-teal-500",
+    clauses: [
+      "Nu acoperă infiltrațiile produse gradual.",
+      "Despăgubirea poate fi redusă dacă nu există dovada întreținerii locuinței.",
+    ],
+    pros: ["Acoperire bună pentru incendiu", "Include furt", "Asistență 24/7"],
+    cons: ["Limitări la daune provocate de vecini"],
+  },
+  {
+    id: 2,
+    company: "Nova Insurance",
+    type: "Locuință",
+    price: 31,
+    match: 86,
+    coverage: "Bună",
+    hiddenRisk: "Ridicat",
+    color: "from-orange-500 to-red-500",
+    clauses: [
+      "În cazul unor instalații vechi, polița poate fi invalidată.",
+      "Daunele estetice nu sunt despăgubite separat.",
+    ],
+    pros: ["Preț mic", "Emiterea poliței este rapidă"],
+    cons: ["Multe excluderi", "Despăgubiri plafonate"],
+  },
+  {
+    id: 3,
+    company: "Carpathia Safe",
+    type: "Locuință",
+    price: 45,
+    match: 91,
+    coverage: "Excelentă",
+    hiddenRisk: "Scăzut",
+    color: "from-blue-500 to-indigo-500",
+    clauses: [
+      "Pentru cutremur există o franșiză de 2% din valoarea daunei.",
+      "Obiectele de valoare trebuie declarate separat.",
+    ],
+    pros: ["Acoperire extinsă", "Risc contractual mic", "Bună pentru apartamente"],
+    cons: ["Preț mai mare"],
+  },
+];
+
+const riskStyles = {
+  Scăzut: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  Mediu: "bg-amber-50 text-amber-700 border-amber-200",
+  Ridicat: "bg-red-50 text-red-700 border-red-200",
+};
+
+export default function AsiguroAIFrontend() {
+  const [budget, setBudget] = useState(40);
+  const [insuranceType, setInsuranceType] = useState("Locuință");
+  const [priority, setPriority] = useState("Acoperire maximă");
+  const [query, setQuery] = useState("");
+
+  const filteredOffers = useMemo(() => {
+    return offers
+      .filter((offer) => offer.type === insuranceType)
+      .filter((offer) => offer.price <= Number(budget) + 12)
+      .sort((a, b) => b.match - a.match);
+  }, [budget, insuranceType]);
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-white">
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute left-1/2 top-0 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-blue-500/20 blur-3xl" />
+        <div className="absolute right-0 top-80 h-[360px] w-[360px] rounded-full bg-emerald-500/10 blur-3xl" />
+      </div>
+
+      <main className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <nav className="mb-12 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-slate-950 shadow-lg">
+              <ShieldCheck className="h-6 w-6" />
+            </div>
+            <div>
+              <p className="text-lg font-bold tracking-tight">PolițaClar AI</p>
+              <p className="text-xs text-slate-400">ViaSTEM · JA Romania Demo</p>
+            </div>
+          </div>
+          <Button className="rounded-2xl bg-white px-5 py-5 text-slate-950 hover:bg-slate-100">
+            Încearcă demo
+            <ChevronRight className="ml-2 h-4 w-4" />
+          </Button>
+        </nav>
+
+        <section className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55 }}
+          >
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300 backdrop-blur">
+              <Sparkles className="h-4 w-4 text-blue-300" />
+              AI care citește clauzele înainte să semnezi
+            </div>
+            <h1 className="max-w-4xl text-5xl font-black leading-tight tracking-tight sm:text-6xl">
+              Compară asigurări. Înțelege riscurile. Evită clauzele ascunse.
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+              O aplicație web care personalizează căutarea după nevoile tale, compară ofertele și explică pe scurt ce situații pot limita sau anula despăgubirea.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button className="rounded-2xl bg-blue-500 px-6 py-6 text-base font-semibold hover:bg-blue-400">
+                <Search className="mr-2 h-5 w-5" />
+                Compară oferte
+              </Button>
+              <Button variant="outline" className="rounded-2xl border-white/15 bg-white/5 px-6 py-6 text-base text-white hover:bg-white/10 hover:text-white">
+                <Upload className="mr-2 h-5 w-5" />
+                Încarcă poliță PDF
+              </Button>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.55, delay: 0.1 }}
+          >
+            <Card className="rounded-[2rem] border-white/10 bg-white/10 shadow-2xl backdrop-blur-xl">
+              <CardContent className="p-6">
+                <div className="mb-5 flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-slate-300">Analiză rapidă</p>
+                    <h2 className="text-2xl font-bold text-white">Profilul tău</h2>
+                  </div>
+                  <div className="rounded-2xl bg-blue-500/20 p-3 text-blue-200">
+                    <SlidersHorizontal className="h-6 w-6" />
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <label className="block">
+                    <span className="mb-2 block text-sm text-slate-300">Tip asigurare</span>
+                    <select
+                      value={insuranceType}
+                      onChange={(e) => setInsuranceType(e.target.value)}
+                      className="w-full rounded-2xl border border-white/10 bg-slate-900/70 px-4 py-3 text-white outline-none ring-blue-400 transition focus:ring-2"
+                    >
+                      <option>Locuință</option>
+                      <option>Auto</option>
+                      <option>Călătorie</option>
+                      <option>Sănătate</option>
+                    </select>
+                  </label>
+
+                  <label className="block">
+                    <span className="mb-2 block text-sm text-slate-300">Buget lunar: {budget} lei</span>
+                    <input
+                      type="range"
+                      min="20"
+                      max="80"
+                      value={budget}
+                      onChange={(e) => setBudget(e.target.value)}
+                      className="w-full accent-blue-500"
+                    />
+                  </label>
+
+                  <label className="block">
+                    <span className="mb-2 block text-sm text-slate-300">Prioritate</span>
+                    <select
+                      value={priority}
+                      onChange={(e) => setPriority(e.target.value)}
+                      className="w-full rounded-2xl border border-white/10 bg-slate-900/70 px-4 py-3 text-white outline-none ring-blue-400 transition focus:ring-2"
+                    >
+                      <option>Acoperire maximă</option>
+                      <option>Preț minim</option>
+                      <option>Risc contractual scăzut</option>
+                      <option>Cel mai bun raport preț/acoperire</option>
+                    </select>
+                  </label>
+
+                  <label className="block">
+                    <span className="mb-2 block text-sm text-slate-300">Ce te interesează?</span>
+                    <div className="flex items-center rounded-2xl border border-white/10 bg-slate-900/70 px-4 py-3">
+                      <Search className="mr-3 h-5 w-5 text-slate-400" />
+                      <input
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        placeholder="ex: acoperire cutr
